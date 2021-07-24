@@ -1,0 +1,14 @@
+.main-container{
+  background-color: #24252D ;
+  width: 100%;
+  height: 85vh;
+  
+}
+
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}

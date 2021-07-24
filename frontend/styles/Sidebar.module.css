@@ -1,0 +1,20 @@
+.sidebar-container{
+    width: 20%;
+    height: 85vh;
+    background-color: #0D0E13;
+    resize: horizontal;
+    overflow: auto;
+}
+
+.sidebar-text{
+    color: #b3b3b3;
+    font-size: 0.875rem;
+}
+.sidebar-icon{
+    color: #b3b3b3;
+    font-size: 1.4rem;
+}
+.sidebar-textdiv {
+    display: flex;
+    align-items: center;
+}

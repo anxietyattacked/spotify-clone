@@ -1,0 +1,20 @@
+.player-container {
+height: 15vh;
+width: 100%;
+background-color: #282931;
+position: fixed;
+
+}
+.player-elements {
+    display: flex;
+    justify-content: space-between;
+
+}
+.player-controls {
+    display: flex;
+    justify-content: space-between;
+}
+.sidebar-text{
+    color: rgb(140, 145, 141);
+    font-size: 3.4rem;
+}
