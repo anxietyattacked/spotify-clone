@@ -1,18 +1,26 @@
 .sidebar-container{
     width: 20%;
     height: 85vh;
-    background-color: #0D0E13;
+    background-color: #000000;
     resize: horizontal;
     overflow: auto;
+}
+.sidebar-text-container {
+margin-top: 2rem;
 }
 
 .sidebar-text{
     color: #b3b3b3;
-    font-size: 0.875rem;
+    font-size: 0.975rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .sidebar-icon{
     color: #b3b3b3;
-    font-size: 1.4rem;
+    font-size: 1.4em;
+    margin-left: 1rem;
+    margin-right: 1rem
 }
 .sidebar-textdiv {
     display: flex;

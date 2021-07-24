@@ -5,7 +5,7 @@ const Sidebar = () => {
     return (
         <div className={styles["sidebar-container"]}>
             <div>
-            <div>
+            <div className={styles["sidebar-text-container"]}>
                 <div className={styles["sidebar-textdiv"]}>
                 <span className={`iconify ${styles['sidebar-icon']}`}data-icon="ci-home-fill" data-inline="false"></span>
                 <h1 className={styles["sidebar-text"]}>Home</h1>
