@@ -9,6 +9,16 @@ position: fixed;
 .player-elements {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0 1.5rem 0 1.5rem;
+
+}
+.song-title{
+    color: #ffff;
+    font-size: 1rem;
+}
+.artist {
+    color: #b3b3b3;
+    font-size: .8rem;
 
 }
 .player-controls {
@@ -16,6 +26,15 @@ position: fixed;
     flex-direction: column;
     justify-content: center;
     --tw-space-x-reverse: 0;
+}
+.player-controls-main {
+    display: flex;
+    justify-content: center;
+
+}
+.player-controls-bar {
+    display: flex;
+
 }
 .player-play{
     color: rgb(255, 255, 255);
@@ -32,3 +51,89 @@ margin-right: .5rem;
 .player-skip:nth-child(3){
 margin-left: .5rem;
 }
+
+.player-time{
+    color: #b3b3b3; 
+    font-size: .8rem;
+    margin-top: .4rem;
+  
+}
+.player-time:nth-child(1){
+    margin-right: .5rem;
+  
+}
+.player-time:nth-child(3){
+    margin-left: .5rem;
+  
+}
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 95%; /* Full-width */
+    height: 3px; 
+    color: #b3b3b3; 
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    margin-top: .9rem;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 10px; /* Set a specific slider handle width */
+    height: 10px; /* Slider handle height */
+    border-radius: 50%;
+    background: #1db954; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 10px; /* Set a specific slider handle width */
+    height: 10px; /* Slider handle height */
+    border-radius: 50%;
+    background: #1db954; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  .player-sound-controls{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      place-content: center;
+
+
+  }
+  .player-sound{
+    color: #b3b3b3;
+    font-size: 1.5rem;
+    justify-self: end;
+    grid-column: span 2 / span 2;
+    margin-top: .2rem;
+  }
+  .sound-slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 95%; /* Full-width */
+    height: 3px; 
+    color: #b3b3b3; 
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    margin-top: .9rem;
+  }
+  .sound-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 10px; /* Set a specific slider handle width */
+    height: 10px; /* Slider handle height */
+    border-radius: 50%;
+    background: #1db954; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  .sound-slider::-moz-range-thumb {
+    width: 10px; /* Set a specific slider handle width */
+    height: 10px; /* Slider handle height */
+    border-radius: 50%;
+    background: #1db954; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
