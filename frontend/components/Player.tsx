@@ -19,23 +19,48 @@ function formatTime(seconds: number) {
 }
 
 const Player = () => {
-  const currentTrackInfo = {
-    title: "Postive Effect",
-    artist: "Marc Rebillet",
-    time: 42,
-  };
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const tracks = [
+    {
+      title: "epic",
+      artist: "bensound.com",
+      time: 178,
+      image: "",
+      location: "./bensound-epic.mp3",
+    },
+    {
+      title: "SciFi",
+      artist: "bensound.com",
+      time: 284,
+      Image: "",
+      location: "./bensound-scifi.mp3",
+    },
+    {
+      title: "Postive Effect",
+      artist: "Marc Rebillet",
+      time: 42,
+      image: "",
+      location: "./positiveEffect.mp3",
+    },
+  ];
 
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(50);
+  // const currentTrackInfo = {
+  //   title: "Postive Effect",
+  //   artist: "Marc Rebillet",
+  //   time: 42,
+  //   location: "./positiveEffect.mp3",
+  // };
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressBar = useRef<HTMLInputElement>(null);
   const soundBar = useRef<HTMLInputElement>(null);
   const animationRef = useRef<any>(); // reference the animation
-  const isReady = useRef(false);
-  console.log(currentTime);
+
+  let [trackIndex, setTrackIndex] = useState(0);
+  const [currentTrackInfo, setCurrentTrackInfo] = useState(tracks[0]);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(currentTrackInfo.time);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(50);
+
   const togglePlayPause = () => {
     const prevValue = isPlaying;
     setIsPlaying(!prevValue);
@@ -53,6 +78,9 @@ const Player = () => {
 
   const whilePlaying = () => {
     if (progressBar.current && audioRef.current) {
+      if (audioRef.current.onloadeddata) {
+        audioRef.current.play();
+      }
       progressBar.current.value = audioRef.current.currentTime.toString();
       changePlayerCurrentTime();
     }
@@ -66,60 +94,48 @@ const Player = () => {
       changePlayerCurrentTime();
     }
   };
-  const changeSound = () => {};
+
   const changePlayerCurrentTime = () => {
     if (progressBar.current) {
       progressBar.current.style.setProperty(
         "--seek-before-width",
-        `${(parseInt(progressBar.current.value) / duration) * 100}%`
+        `${
+          (parseInt(progressBar.current.value) / currentTrackInfo.time) * 100
+        }%`
       );
       setCurrentTime(parseInt(progressBar.current.value));
     }
   };
 
-  // const changeRange = () => {
-  //   if (audioRef.current) {
-  //     audioRef.current.currentTime = parseInt(
-  //       progressBar.current?.value as string
-  //     );
-  //     progressBar.current?.style.setProperty(
-  //       "--seek-before-width",
-  //       `${(parseInt(progressBar.current.value) / duration) * 100}%`
-  //     );
-  //     setCurrentTime(parseInt(progressBar.current?.value as string));
-  //   }
-  // };
-  // const whileIsPlaying = () => {
-  //   if (isPlaying && audioRef.current) {
-  //     if (progressBar.current && audioRef.current) {
-  //       progressBar.current.value = audioRef.current.currentTime.toString();
-  //     }
-
-  //     setCurrentTime(audioRef.current.currentTime);
-  //   }
-  // }
-
   useEffect(() => {
     if (audioRef.current && progressBar.current) {
       const seconds = Math.floor(audioRef.current.duration);
-      setDuration(seconds);
       progressBar.current.max = seconds.toString();
+      if (isPlaying) {
+        audioRef.current.play();
+      }
     }
-
+    setCurrentTrackInfo(tracks[trackIndex]);
     audioRef.current!.volume = volume / 100;
   }, [
     audioRef?.current?.onloadedmetadata,
     audioRef?.current?.readyState,
-    isPlaying,
     volume,
+    trackIndex,
   ]);
+  useEffect(() => {
+    if (audioRef.current && !isPlaying) {
+      audioRef.current.autoplay = false;
+    }
+  }, [isPlaying]);
 
   return (
     <>
       <footer className={styles["player-container"]}>
         <audio
+          autoPlay={true}
           ref={audioRef}
-          src="./positiveEffect.mp3"
+          src={currentTrackInfo.location}
           preload="metadata"
         ></audio>
         <div className={styles["player-elements"]}>
@@ -135,10 +151,15 @@ const Player = () => {
                   if (audioRef.current!.currentTime <= 10) {
                     audioRef.current!.currentTime = 0;
                   }
+                  if (trackIndex === 0) {
+                    setTrackIndex(tracks.length - 1);
+                  } else {
+                    setTrackIndex(trackIndex--);
+                  }
                 }}
               >
                 <span
-                  className={`iconify ${styles["player-skip"]}`}
+                  className={`iconify ${styles["player-skip-back"]}`}
                   data-icon="bi-skip-start-fill"
                   data-inline="false"
                 ></span>
@@ -158,9 +179,26 @@ const Player = () => {
                   ></span>
                 )}
               </button>
-              <button className={styles["button"]} onClick={() => {}}>
+              <button
+                className={styles["button"]}
+                onClick={async () => {
+                  {
+                    if (trackIndex === tracks.length - 1 && audioRef.current) {
+                      setIsPlaying(false);
+                      audioRef.current.currentTime = 0;
+                      setTrackIndex(0);
+                      setIsPlaying(true);
+                    } else if (audioRef.current) {
+                      setIsPlaying(false);
+                      audioRef.current.currentTime = 0;
+                      setTrackIndex(trackIndex + 1);
+                      setIsPlaying(true);
+                    }
+                  }
+                }}
+              >
                 <span
-                  className={`iconify ${styles["player-skip"]}`}
+                  className={`iconify ${styles["player-skip-forward"]}`}
                   data-icon="bi-skip-end-fill"
                   data-inline="false"
                 ></span>
@@ -181,7 +219,9 @@ const Player = () => {
                 id="myRange"
               ></input>
               <p className={`iconify ${styles["player-time"]}`}>
-                {formatTime(duration)}
+                {currentTrackInfo
+                  ? formatTime(currentTrackInfo.time)
+                  : formatTime(0)}
               </p>
             </div>
           </div>

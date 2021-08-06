@@ -41,16 +41,17 @@
   color: rgb(255, 255, 255);
   font-size: 2.4rem;
 }
-.player-skip {
+.player-skip-forward {
   color: #b3b3b3;
   font-size: 1.5rem;
   margin-top: 0.4rem;
-}
-.player-skip:nth-child(1) {
-  margin-right: 0.5rem;
-}
-.player-skip:nth-child(3) {
   margin-left: 0.5rem;
+}
+.player-skip-back {
+  color: #b3b3b3;
+  font-size: 1.5rem;
+  margin-top: 0.4rem;
+  margin-right: 0.5rem;
 }
 
 .player-time {
