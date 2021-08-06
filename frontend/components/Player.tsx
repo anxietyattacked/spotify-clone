@@ -78,9 +78,6 @@ const Player = () => {
 
   const whilePlaying = () => {
     if (progressBar.current && audioRef.current) {
-      if (audioRef.current.onloadeddata) {
-        audioRef.current.play();
-      }
       progressBar.current.value = audioRef.current.currentTime.toString();
       changePlayerCurrentTime();
     }
@@ -96,11 +93,12 @@ const Player = () => {
   };
 
   const changePlayerCurrentTime = () => {
-    if (progressBar.current) {
+    if (progressBar.current && audioRef.current) {
       progressBar.current.style.setProperty(
         "--seek-before-width",
         `${
-          (parseInt(progressBar.current.value) / currentTrackInfo.time) * 100
+          (parseInt(progressBar.current.value) / audioRef.current.duration) *
+          100
         }%`
       );
       setCurrentTime(parseInt(progressBar.current.value));
@@ -148,13 +146,19 @@ const Player = () => {
               <button
                 className={styles["button"]}
                 onClick={() => {
-                  if (audioRef.current!.currentTime <= 10) {
-                    audioRef.current!.currentTime = 0;
-                  }
-                  if (trackIndex === 0) {
+                  // if (audioRef.current!.currentTime <= 10) {
+                  //   audioRef.current!.currentTime = 0;
+                  // }
+                  if (trackIndex === 0 && audioRef.current) {
+                    setIsPlaying(false);
+                    audioRef.current.currentTime = 0;
                     setTrackIndex(tracks.length - 1);
-                  } else {
-                    setTrackIndex(trackIndex--);
+                    setIsPlaying(true);
+                  } else if (audioRef.current) {
+                    setIsPlaying(false);
+                    audioRef.current.currentTime = 0;
+                    setTrackIndex(trackIndex - 1);
+                    setIsPlaying(true);
                   }
                 }}
               >
