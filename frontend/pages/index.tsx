@@ -4,6 +4,17 @@ import styles from "../styles/Home.module.css";
 import { useTable } from "react-table";
 import React from "react";
 
+function formatTime(seconds: number) {
+  return [
+    Math.floor(seconds / 60), // minutes
+    Math.floor(seconds % 60), // remaining seconds
+  ]
+    .map((x) => x.toString())
+
+    .map((x) => (x.length === 1 ? `0${x}` : x))
+    .join(":");
+}
+
 export default function Home() {
   const data = React.useMemo(
     () => [
@@ -35,24 +46,16 @@ export default function Home() {
     () => [
       {
         Header: "#",
-        // eslint-disable-next-line react/display-name
-        Cell: ({ cell }: any) => (
-          <div>
-            <h1>{cell.row.index + 1}</h1>
-          </div>
-        ),
-      },
-      {
-        Header: " ",
         accessor: "image",
         // eslint-disable-next-line react/display-name
         Cell: ({ cell }: any) => (
-          <div>
+          <div className={styles.indexDiv}>
+            <p className={styles.text}>{cell.row.index + 1}</p>
             <Image
               src={cell.row.values.image}
               alt={`${cell.row.values.title}`}
-              width={30}
-              height={30}
+              width={50}
+              height={50}
             ></Image>
           </div>
         ),
@@ -64,21 +67,29 @@ export default function Home() {
         // eslint-disable-next-line react/display-name
         Cell: ({ cell }: any) => (
           <div>
-            <p>{cell.row.values.title}</p>
-            {/* <Image
-              src={cell.row.values.image}
-              alt={`${cell.row.values.title}`}
-            ></Image> */}
+            <p className={styles.title}>{cell.row.values.title}</p>
           </div>
         ),
       },
       {
         Header: "Artist",
         accessor: "artist",
+        // eslint-disable-next-line react/display-name
+        Cell: ({ cell }: any) => (
+          <div>
+            <p className={styles.text}>{cell.row.values.artist}</p>
+          </div>
+        ),
       },
       {
         Header: "duration",
         accessor: "time",
+        // eslint-disable-next-line react/display-name
+        Cell: ({ cell }: any) => (
+          <div>
+            <p className={styles.text}>{formatTime(cell.row.values.time)}</p>
+          </div>
+        ),
       },
     ],
     []
@@ -101,13 +112,17 @@ export default function Home() {
           <p>playlist info summary</p>
         </div>
         <div>
-          <table {...getTableProps()}>
+          <table className={styles.table} {...getTableProps()}>
             <thead className={styles["table-head"]}>
               {headerGroups.map((headerGroup) => {
                 const { key, ...restHeaderGroupProps } =
                   headerGroup.getHeaderGroupProps();
                 return (
-                  <tr key={key} {...restHeaderGroupProps}>
+                  <tr
+                    className={styles["header-row"]}
+                    key={key}
+                    {...restHeaderGroupProps}
+                  >
                     {headerGroup.headers.map((column) => {
                       const { key, ...restColumn } = column.getHeaderProps();
                       return (
@@ -124,7 +139,7 @@ export default function Home() {
                 );
               })}
             </thead>
-            <tbody {...getTableBodyProps}>
+            <tbody className={styles.tableBody} {...getTableBodyProps}>
               {rows.map((row) => {
                 prepareRow(row);
                 const { key, ...restRowProps } = row.getRowProps();
@@ -133,6 +148,7 @@ export default function Home() {
                     onDoubleClick={() => {
                       console.log("click");
                     }}
+                    className={styles["playlist-row"]}
                     key={key}
                     {...restRowProps}
                   >
