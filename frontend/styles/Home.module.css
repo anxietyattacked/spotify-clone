@@ -9,6 +9,7 @@
   width: 100%;
 }
 .table {
+  background-color: #121212;
   width: 100%;
   padding: 0 0.5rem;
 }
@@ -30,7 +31,9 @@
 }
 .indexDiv {
   display: flex;
-  justify-content: space-between;
+}
+.albumArt {
+  margin-left: 0.5rem;
 }
 .playlist-row {
   display: grid;

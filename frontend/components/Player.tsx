@@ -17,47 +17,77 @@ function formatTime(seconds: number) {
     .map((x) => (x.length === 1 ? `0${x}` : x))
     .join(":");
 }
+interface Props {
+  tracks: {
+    title: string;
+    artist: string;
+    time: number;
+    image: string;
+    location: string;
+  }[];
+  setTracks: React.Dispatch<
+    React.SetStateAction<
+      {
+        title: string;
+        artist: string;
+        time: number;
+        image: string;
+        location: string;
+      }[]
+    >
+  >;
+  trackIndex: number;
+  setTrackIndex: React.Dispatch<React.SetStateAction<number>>;
+  sampleTracks: {
+    title: string;
+    artist: string;
+    time: number;
+    image: string;
+    location: string;
+  }[];
+  currentTrackInfo: {
+    title: string;
+    artist: string;
+    time: number;
+    image: string;
+    location: string;
+  };
+  setCurrentTrackInfo: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      artist: string;
+      time: number;
+      image: string;
+      location: string;
+    }>
+  >;
+  audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+}
 
-const Player = () => {
-  const tracks = [
-    {
-      title: "epic",
-      artist: "bensound.com",
-      time: 178,
-      image: "",
-      location: "./bensound-epic.mp3",
-    },
-    {
-      title: "SciFi",
-      artist: "bensound.com",
-      time: 284,
-      Image: "",
-      location: "./bensound-scifi.mp3",
-    },
-    {
-      title: "Postive Effect",
-      artist: "Marc Rebillet",
-      time: 42,
-      image: "",
-      location: "./positiveEffect.mp3",
-    },
-  ];
-
+const Player: React.FC<Props> = ({
+  tracks,
+  setTracks,
+  trackIndex,
+  setTrackIndex,
+  sampleTracks,
+  currentTrackInfo,
+  setCurrentTrackInfo,
+  audioRef,
+}) => {
   // const currentTrackInfo = {
   //   title: "Postive Effect",
   //   artist: "Marc Rebillet",
   //   time: 42,
   //   location: "./positiveEffect.mp3",
   // };
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressBar = useRef<HTMLInputElement>(null);
   const soundBar = useRef<HTMLInputElement>(null);
   const animationRef = useRef<any>(); // reference the animation
 
-  let [trackIndex, setTrackIndex] = useState(0);
-  const [currentTrackInfo, setCurrentTrackInfo] = useState(tracks[0]);
+  // const [currentTrackInfo, setCurrentTrackInfo] = useState(sampleTracks[0]);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(currentTrackInfo.time);
+  const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
 
@@ -130,12 +160,6 @@ const Player = () => {
   return (
     <>
       <footer className={styles["player-container"]}>
-        <audio
-          autoPlay={true}
-          ref={audioRef}
-          src={currentTrackInfo.location}
-          preload="metadata"
-        ></audio>
         <div className={styles["player-elements"]}>
           <div>
             <h2 className={styles["song-title"]}>{currentTrackInfo.title}</h2>

@@ -15,9 +15,63 @@ function formatTime(seconds: number) {
     .join(":");
 }
 
-export default function Home() {
+interface Props {
+  tracks: never[];
+  setTracks: React.Dispatch<React.SetStateAction<never[]>>;
+  trackIndex: number;
+  setTrackIndex: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Home: React.FC<Props> = ({
+  tracks,
+  setTracks,
+  trackIndex,
+  setTrackIndex,
+}) => {
   const data = React.useMemo(
     () => [
+      {
+        title: "epic",
+        artist: "bensound.com",
+        time: 178,
+        image: "/1.jpg",
+        location: "./bensound-epic.mp3",
+      },
+      {
+        title: "SciFi",
+        artist: "bensound.com",
+        time: 284,
+        image: "/2.jpg",
+        location: "./bensound-scifi.mp3",
+      },
+      {
+        title: "Postive Effect",
+        artist: "Marc Rebillet",
+        time: 42,
+        image: "/3.jpg",
+        location: "./positiveEffect.mp3",
+      },
+      {
+        title: "epic",
+        artist: "bensound.com",
+        time: 178,
+        image: "/1.jpg",
+        location: "./bensound-epic.mp3",
+      },
+      {
+        title: "SciFi",
+        artist: "bensound.com",
+        time: 284,
+        image: "/2.jpg",
+        location: "./bensound-scifi.mp3",
+      },
+      {
+        title: "Postive Effect",
+        artist: "Marc Rebillet",
+        time: 42,
+        image: "/3.jpg",
+        location: "./positiveEffect.mp3",
+      },
       {
         title: "epic",
         artist: "bensound.com",
@@ -51,12 +105,14 @@ export default function Home() {
         Cell: ({ cell }: any) => (
           <div className={styles.indexDiv}>
             <p className={styles.text}>{cell.row.index + 1}</p>
-            <Image
-              src={cell.row.values.image}
-              alt={`${cell.row.values.title}`}
-              width={50}
-              height={50}
-            ></Image>
+            <div className={styles.albumArt}>
+              <Image
+                src={cell.row.values.image}
+                alt={`${cell.row.values.title}`}
+                width={50}
+                height={50}
+              ></Image>
+            </div>
           </div>
         ),
       },
@@ -140,13 +196,14 @@ export default function Home() {
               })}
             </thead>
             <tbody className={styles.tableBody} {...getTableBodyProps}>
-              {rows.map((row) => {
+              {rows.map((row, i) => {
                 prepareRow(row);
                 const { key, ...restRowProps } = row.getRowProps();
                 return (
                   <tr
                     onDoubleClick={() => {
-                      console.log("click");
+                      setTracks(data);
+                      setTrackIndex(i);
                     }}
                     className={styles["playlist-row"]}
                     key={key}
@@ -169,4 +226,5 @@ export default function Home() {
       </main>
     </div>
   );
-}
+};
+export default Home;
