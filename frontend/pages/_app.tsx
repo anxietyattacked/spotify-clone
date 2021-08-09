@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import "../styles/globals.css";
+import Split from "react-split";
+import "react-split/";
 import type { AppProps } from "next/app";
 import React, { useRef, useState } from "react";
 import Head from "next/head";
@@ -41,16 +43,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
       </Head>
-      <div className="side-and-main">
-        <Sidebar />
-        <Component
-          {...pageProps}
-          tracks={tracks}
-          setTracks={setTracks}
-          trackIndex={trackIndex}
-          setTrackIndex={setTrackIndex}
-        />
-      </div>
+
+      <Sidebar />
+      <Component
+        {...pageProps}
+        tracks={tracks}
+        setTracks={setTracks}
+        trackIndex={trackIndex}
+        setTrackIndex={setTrackIndex}
+      />
+
       <audio
         autoPlay={true}
         ref={audioRef}

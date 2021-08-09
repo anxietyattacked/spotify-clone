@@ -69,25 +69,16 @@ const Player: React.FC<Props> = ({
   setTracks,
   trackIndex,
   setTrackIndex,
-  sampleTracks,
   currentTrackInfo,
   setCurrentTrackInfo,
   audioRef,
 }) => {
-  // const currentTrackInfo = {
-  //   title: "Postive Effect",
-  //   artist: "Marc Rebillet",
-  //   time: 42,
-  //   location: "./positiveEffect.mp3",
-  // };
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressBar = useRef<HTMLInputElement>(null);
   const soundBar = useRef<HTMLInputElement>(null);
-  const animationRef = useRef<any>(); // reference the animation
+  const animationRef = useRef<any>();
 
-  // const [currentTrackInfo, setCurrentTrackInfo] = useState(sampleTracks[0]);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  // const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
 
@@ -96,10 +87,20 @@ const Player: React.FC<Props> = ({
     setIsPlaying(!prevValue);
     if (!prevValue) {
       if (audioRef.current) {
-        audioRef.current.play();
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then((_) => {
+              // Automatic playback started!
+              // Show playing UI.
+              animationRef.current = requestAnimationFrame(whilePlaying);
+            })
+            .catch((error) => {
+              // Auto-play was prevented
+              // Show paused UI.
+            });
+        }
       }
-
-      animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
       if (audioRef.current) audioRef.current.pause();
       cancelAnimationFrame(animationRef.current);
@@ -121,7 +122,6 @@ const Player: React.FC<Props> = ({
       changePlayerCurrentTime();
     }
   };
-
   const changePlayerCurrentTime = () => {
     if (progressBar.current && audioRef.current) {
       progressBar.current.style.setProperty(
@@ -139,9 +139,21 @@ const Player: React.FC<Props> = ({
     if (audioRef.current && progressBar.current) {
       const seconds = Math.floor(audioRef.current.duration);
       progressBar.current.max = seconds.toString();
-      if (isPlaying) {
-        audioRef.current.play();
-      }
+      // if (isPlaying) {
+      //   const playPromise = audioRef.current.play();
+      //   if (playPromise !== undefined) {
+      //     playPromise
+      //       .then((_) => {
+      //         // Automatic playback started!
+      //         // Show playing UI.
+      //       })
+      //       .catch((error) => {
+      //         // Auto-play was prevented
+      //         // Show paused UI.
+      //         cancelAnimationFrame(animationRef.current);
+      //       });
+      //   }
+      // }
     }
     setCurrentTrackInfo(tracks[trackIndex]);
     audioRef.current!.volume = volume / 100;
@@ -154,8 +166,36 @@ const Player: React.FC<Props> = ({
   useEffect(() => {
     if (audioRef.current && !isPlaying) {
       audioRef.current.autoplay = false;
+      if (currentTime == currentTrackInfo.time) {
+        console.log("ended");
+      }
+    } else if (audioRef.current && isPlaying) {
+      const playPromise = audioRef.current.play();
+      if (currentTime == currentTrackInfo.time) {
+        setIsPlaying(false);
+        audioRef.current.currentTime = 0;
+        if (trackIndex === tracks.length - 1) {
+          setTrackIndex(0);
+        } else {
+          setTrackIndex(trackIndex + 1);
+        }
+        setIsPlaying(true);
+      }
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {
+            // Automatic playback started!
+            // Show playing UI.
+            animationRef.current = requestAnimationFrame(whilePlaying);
+          })
+          .catch((error) => {
+            // Auto-play was prevented
+            // Show paused UI.
+            // cancelAnimationFrame(animationRef.current);
+          });
+      }
     }
-  }, [isPlaying]);
+  }, [isPlaying, audioRef, currentTrackInfo.location, currentTime]);
 
   return (
     <>
@@ -174,12 +214,22 @@ const Player: React.FC<Props> = ({
                   //   audioRef.current!.currentTime = 0;
                   // }
                   if (trackIndex === 0 && audioRef.current) {
+                    if (isPlaying) {
+                      setIsPlaying(false);
+                      audioRef.current.currentTime = 0;
+                      setTrackIndex(tracks.length - 1);
+                      setIsPlaying(true);
+                    } else if (!isPlaying) {
+                      audioRef.current.currentTime = 0;
+                      setTrackIndex(tracks.length - 1);
+                      setIsPlaying(true);
+                    }
+                  } else if (audioRef.current && isPlaying) {
                     setIsPlaying(false);
                     audioRef.current.currentTime = 0;
-                    setTrackIndex(tracks.length - 1);
+                    setTrackIndex(trackIndex - 1);
                     setIsPlaying(true);
-                  } else if (audioRef.current) {
-                    setIsPlaying(false);
+                  } else if (audioRef.current && !isPlaying) {
                     audioRef.current.currentTime = 0;
                     setTrackIndex(trackIndex - 1);
                     setIsPlaying(true);
@@ -212,12 +262,23 @@ const Player: React.FC<Props> = ({
                 onClick={async () => {
                   {
                     if (trackIndex === tracks.length - 1 && audioRef.current) {
+                      if (isPlaying) {
+                        setIsPlaying(false);
+                        audioRef.current.currentTime = 0;
+                        setTrackIndex(0);
+                        setIsPlaying(true);
+                      }
+                      if (!isPlaying) {
+                        audioRef.current.currentTime = 0;
+                        setTrackIndex(0);
+                        setIsPlaying(true);
+                      }
+                    } else if (audioRef.current && isPlaying) {
                       setIsPlaying(false);
                       audioRef.current.currentTime = 0;
-                      setTrackIndex(0);
+                      setTrackIndex(trackIndex + 1);
                       setIsPlaying(true);
-                    } else if (audioRef.current) {
-                      setIsPlaying(false);
+                    } else if (audioRef.current && !isPlaying) {
                       audioRef.current.currentTime = 0;
                       setTrackIndex(trackIndex + 1);
                       setIsPlaying(true);

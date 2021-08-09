@@ -1,10 +1,11 @@
 .sidebar-container {
   width: 20%;
-  max-width: 25%;
-  height: 87.5vh;
+  max-height: 87.5vh;
+  min-height: 87.5vh;
   background-color: #000000;
-  resize: horizontal;
-  overflow: auto;
+  position: fixed;
+  overflow-y: hidden;
+  overflow-x: hidden;
   z-index: 10;
 }
 .sidebar-text-container {
