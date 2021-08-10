@@ -16,6 +16,8 @@ function formatTime(seconds: number) {
 }
 
 interface Props {
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   tracks: never[];
   setTracks: React.Dispatch<React.SetStateAction<never[]>>;
   trackIndex: number;
@@ -23,6 +25,8 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({
+  isPlaying,
+  setIsPlaying,
   tracks,
   setTracks,
   trackIndex,
@@ -212,6 +216,7 @@ const Home: React.FC<Props> = ({
                     onDoubleClick={() => {
                       setTracks(data);
                       setTrackIndex(i);
+                      setIsPlaying(true);
                     }}
                     className={styles["playlist-row"]}
                     key={key}

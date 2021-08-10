@@ -55,6 +55,9 @@
 .albumArt {
   margin-left: 0.5rem;
 }
+.textDiv {
+  display: flex;
+}
 .playlist-row {
   display: grid;
   justify-content: space-between;

@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import styles from "../styles/Player.module.css";
+import Image from "next/image";
 
 function formatTime(seconds: number) {
   return [
@@ -18,6 +19,8 @@ function formatTime(seconds: number) {
     .join(":");
 }
 interface Props {
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   tracks: {
     title: string;
     artist: string;
@@ -65,6 +68,8 @@ interface Props {
 }
 
 const Player: React.FC<Props> = ({
+  isPlaying,
+  setIsPlaying,
   tracks,
   setTracks,
   trackIndex,
@@ -79,7 +84,7 @@ const Player: React.FC<Props> = ({
 
   const [currentTime, setCurrentTime] = useState(0);
   // const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+
   const [volume, setVolume] = useState(50);
 
   const togglePlayPause = () => {
@@ -201,9 +206,19 @@ const Player: React.FC<Props> = ({
     <>
       <footer className={styles["player-container"]}>
         <div className={styles["player-elements"]}>
-          <div>
-            <h2 className={styles["song-title"]}>{currentTrackInfo.title}</h2>
-            <h3 className={styles["artist"]}>{currentTrackInfo.artist}</h3>
+          <div className={styles.infoDiv}>
+            <div className={styles.albumArt}>
+              <Image
+                src={currentTrackInfo.image}
+                alt="album art"
+                width={60}
+                height={60}
+              />
+            </div>
+            <div className={styles.textDiv}>
+              <h2 className={styles["song-title"]}>{currentTrackInfo.title}</h2>
+              <h3 className={styles["artist"]}>{currentTrackInfo.artist}</h3>
+            </div>
           </div>
           <div className={styles["player-controls"]}>
             <div className={styles["player-controls-main"]}>

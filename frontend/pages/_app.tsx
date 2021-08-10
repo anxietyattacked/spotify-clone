@@ -33,6 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       location: "./positiveEffect.mp3",
     },
   ];
+  const [isPlaying, setIsPlaying] = useState(false);
   const [tracks, setTracks] = useState(sampleTracks);
   let [trackIndex, setTrackIndex] = useState(0);
   const [currentTrackInfo, setCurrentTrackInfo] = useState(sampleTracks[0]);
@@ -47,6 +48,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Sidebar />
       <Component
         {...pageProps}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
         tracks={tracks}
         setTracks={setTracks}
         trackIndex={trackIndex}
@@ -60,6 +63,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         preload="metadata"
       ></audio>
       <Player
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
         tracks={tracks}
         setTracks={setTracks}
         trackIndex={trackIndex}

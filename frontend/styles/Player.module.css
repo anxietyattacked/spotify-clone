@@ -11,6 +11,17 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0 1.5rem 0 1.5rem;
 }
+.infoDiv {
+  display: flex;
+}
+.albumArt {
+  margin-right: 0.75rem;
+}
+.textDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .song-title {
   color: #ffff;
   font-size: 1rem;
