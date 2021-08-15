@@ -171,9 +171,6 @@ const Player: React.FC<Props> = ({
   useEffect(() => {
     if (audioRef.current && !isPlaying) {
       audioRef.current.autoplay = false;
-      if (currentTime == currentTrackInfo.time) {
-        console.log("ended");
-      }
     } else if (audioRef.current && isPlaying) {
       const playPromise = audioRef.current.play();
       if (currentTime == currentTrackInfo.time) {
@@ -200,7 +197,19 @@ const Player: React.FC<Props> = ({
           });
       }
     }
-  }, [isPlaying, audioRef, currentTrackInfo.location, currentTime]);
+  }, [
+    isPlaying,
+    setIsPlaying,
+    audioRef,
+    currentTrackInfo.location,
+    currentTrackInfo.time,
+    currentTime,
+    tracks,
+    setTracks,
+    trackIndex,
+    setTrackIndex,
+    whilePlaying,
+  ]);
 
   return (
     <>

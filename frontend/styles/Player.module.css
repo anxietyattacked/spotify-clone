@@ -25,10 +25,12 @@
 .song-title {
   color: #ffff;
   font-size: 1rem;
+  font-weight: 500;
 }
 .artist {
   color: #b3b3b3;
   font-size: 0.8rem;
+  font-weight: 400;
 }
 .player-controls {
   display: flex;

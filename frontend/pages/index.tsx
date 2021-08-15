@@ -142,7 +142,7 @@ const Home: React.FC<Props> = ({
         ),
       },
       {
-        Header: "duration",
+        Header: "Duration",
         accessor: "time",
         // eslint-disable-next-line react/display-name
         Cell: ({ cell }: any) => (
