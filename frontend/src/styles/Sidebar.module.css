@@ -1,0 +1,34 @@
+.sidebar-container {
+  width: 20%;
+  max-height: 87.5vh;
+  min-height: 87.5vh;
+  background-color: #000000;
+  position: fixed;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  z-index: 10;
+}
+.sidebar-text-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.sidebar-textdiv {
+  margin-bottom: 1.4rem;
+}
+.sidebar-text {
+  color: #b3b3b3;
+  font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar-icon {
+  color: #b3b3b3;
+  font-size: 1.4em;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.sidebar-textdiv {
+  display: flex;
+  align-items: center;
+}
