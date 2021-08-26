@@ -7,29 +7,13 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 const Player = dynamic(() => import("../components/Player"), { ssr: false });
 import Sidebar from "../components/Sidebar";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
-function SafeHydrate({ children }: any) {
-  return (
-    <div suppressHydrationWarning>
-      {typeof window === "undefined" ? null : children}
-    </div>
-  );
-}
-function MyApp({ Component, pageProps }: AppProps) {
-  const client = new ApolloClient({
-    uri: "https://48p1r2roz4.sse.codesandbox.io",
-    cache: new InMemoryCache(),
-  });
+import useWindowDimensions from "../utils/useWindowDimensions";
+import MobileNav from "../components/MobileNav";
 
+function MyApp({ Component, pageProps }: AppProps) {
   const sampleTracks = [
     {
-      title: "epic",
+      title: "Epic",
       artist: "bensound.com",
       time: 178,
       image: "/1.jpg",
@@ -43,36 +27,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       location: "./bensound-scifi.mp3",
     },
     {
-      title: "Postive Effect",
-      artist: "Marc Rebillet",
-      time: 42,
-      image: "/3.jpg",
-      location: "./positiveEffect.mp3",
-    },
-    {
       title: "The Business (Paul Gannon Remix)",
       artist: "Tiësto",
       time: 219,
       image: "/3.jpg",
       location: "./Tiësto - The Business (Paul Gannon Remix).mp3",
     },
-    {
-      title: "Bury the Light",
-      artist: "Casey Edwards",
-      time: 582,
-      image: "/3.jpg",
-      location:
-        "./Bury the Light - Vergil's battle theme from Devil May Cry 5 Special Edition.mp3",
-    },
   ];
   const [isPlaying, setIsPlaying] = useState(false);
   const [tracks, setTracks] = useState(sampleTracks);
   let [trackIndex, setTrackIndex] = useState(0);
 
-  const [currentTrackInfo, setCurrentTrackInfo] = useState(sampleTracks[0]);
-  // const audio = new Audio()
+  const [currentTrackInfo, setCurrentTrackInfo] = useState(
+    sampleTracks[trackIndex]
+  );
+  const window = useWindowDimensions();
+  let isMobile = window.width! <= 768;
+
   let audioRef = useRef<HTMLAudioElement>(null!);
-  // const audioContext = useRef(new window.AudioContext());
   let listenerRef = useRef<AudioListener>(null!);
   let soundRef = useRef<Audio<GainNode>>(null!);
   useEffect(() => {
@@ -85,46 +57,39 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <ApolloProvider client={client}>
-        <Head>
-          <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-        </Head>
+      {!isMobile ? <Sidebar /> : null}
 
-        <Sidebar />
-        <SafeHydrate>
-          <Component
-            {...pageProps}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            tracks={tracks}
-            setTracks={setTracks}
-            trackIndex={trackIndex}
-            setTrackIndex={setTrackIndex}
-            audioRef={audioRef}
-            listenerRef={listenerRef}
-            soundRef={soundRef}
-          />
-        </SafeHydrate>
-        <audio
-          ref={audioRef}
-          src={currentTrackInfo.location}
-          preload="metadata"
-        >
-          <source />
-        </audio>
-        <Player
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          tracks={tracks}
-          setTracks={setTracks}
-          trackIndex={trackIndex}
-          setTrackIndex={setTrackIndex}
-          sampleTracks={sampleTracks}
-          currentTrackInfo={currentTrackInfo}
-          setCurrentTrackInfo={setCurrentTrackInfo}
-          audioRef={audioRef}
-        />
-      </ApolloProvider>
+      <Component
+        {...pageProps}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        tracks={tracks}
+        setTracks={setTracks}
+        trackIndex={trackIndex}
+        setTrackIndex={setTrackIndex}
+        audioRef={audioRef}
+        listenerRef={listenerRef}
+        soundRef={soundRef}
+        isMobile={isMobile}
+      />
+
+      <audio ref={audioRef} src={currentTrackInfo.location} preload="metadata">
+        <source />
+      </audio>
+      {isMobile ? <MobileNav /> : null}
+      <Player
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        tracks={tracks}
+        setTracks={setTracks}
+        trackIndex={trackIndex}
+        setTrackIndex={setTrackIndex}
+        sampleTracks={sampleTracks}
+        currentTrackInfo={currentTrackInfo}
+        setCurrentTrackInfo={setCurrentTrackInfo}
+        audioRef={audioRef}
+        isMobile={isMobile}
+      />
     </>
   );
 }

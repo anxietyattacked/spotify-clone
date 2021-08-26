@@ -1,6 +1,6 @@
 .player-container {
   padding-top: 1rem;
-  height: 12.5%;
+  height: 13%;
   width: 100%;
   background-color: #181818;
   z-index: 12;
@@ -14,6 +14,7 @@
 .infoDiv {
   display: flex;
 }
+
 .albumArt {
   margin-right: 0.75rem;
 }
@@ -26,11 +27,15 @@
   color: #ffff;
   font-size: 1rem;
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .artist {
   color: #b3b3b3;
   font-size: 0.8rem;
   font-weight: 400;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .player-controls {
   display: flex;
@@ -53,18 +58,18 @@
 }
 .player-play {
   color: rgb(255, 255, 255);
-  font-size: 2.4rem;
+  font-size: 2rem;
 }
 .player-skip-forward {
   color: #b3b3b3;
   font-size: 1.5rem;
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
   margin-left: 0.5rem;
 }
 .player-skip-back {
   color: #b3b3b3;
   font-size: 1.5rem;
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
   margin-right: 0.5rem;
 }
 

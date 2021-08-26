@@ -1,35 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import * as THREE from "three";
-import styles from "../styles/Viz.module.css";
-import img from "./text.png";
-import img1 from "./frame1.png";
-import img2 from "./frame2.png";
-import img3 from "./frame3.png";
-import img4 from "./frame4.png";
-import img5 from "./frame5.png";
-import img6 from "./1.png";
-import img7 from "./basketball.png";
-import { BackSide, UniformsLib } from "three";
-
-// varying vec3 vertexNormal;
-// uniform float uTime;
-// uniform float uData;
-// varying vec2 vUv;
-
-// void main() {
-// vertexNormal = normal;
-// vUv = uv;
-// vec3 scale = vec3(uData /50.0, uData / 50.0, uData / 50.0);
-// gl_Position = projectionMatrix * modelViewMatrix * vec4(position * scale , 1.0);
-
-// varying vec3 vertexNormal;
-// uniform vec3 uColor;
-// varying vec2 vUv;
-// void main()
-// {
-//   // float intensity = pow(0.25 - dot(vertexNormal, vec3(0.0, 0, 1.0)), 8.0);
-//     gl_FragColor = vec4(uColor, 0.02);
-// }
+import styles from "../styles/Visualizer.module.css";
 
 interface Props {
   isPlaying: boolean;
@@ -108,8 +79,8 @@ void main() {
 
   vec2 uv = vUv;
   uv.x += sin(uv.y * 0.25);
-  uv.x += cos(uv.y * 0.25);
-  vec2 repeat = vec2(8.0, 24.0);
+  uv.y += cos(uv.x * 1.25);
+  vec2 repeat = vec2(10.0, 30.0);
   uv = fract(uv * repeat + vec2(0.0, time));
   
   vec4 color = texture2D(uTexture, uv);
@@ -144,18 +115,7 @@ void main() {
         material.uniforms.uTime.value = time;
         sphere.rotation.y += (data1 * Math.random()) / 100000;
         sphere.rotation.x += (data1 * Math.random()) / 100000;
-        material.uniforms.uColor.value.offsetHSL(0.0005, 0.0005, 0);
-
-        // for (let i = 0; i < displacement.length; i++) {
-        //   displacement[i] = Math.sin(0.1 * i + time);
-
-        //   noise[i] += 0.5 * (0.5 - data1);
-        //   noise[i] = THREE.MathUtils.clamp(noise[i], -5, 5);
-
-        //   displacement[i] += noise[i];
-        // }
-
-        // sphere.geometry.attributes.displacement.needsUpdate = true;
+        material.uniforms.uColor.value.offsetHSL(0.000008 * data1, 0.0005, 0);
 
         renderer.render(scene, camera);
       };

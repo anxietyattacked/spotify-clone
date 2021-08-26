@@ -1,31 +1,68 @@
 .main-container {
   background-color: #121212;
-  height: 87.5vh;
+  height: 87vh;
   margin-left: 20%;
   padding-bottom: 12.4%;
 }
+.main-moible-container {
+  background-color: #121212;
+  padding-bottom: 12.4%;
+  height: 87.5vh;
+}
 .playlist-title-container {
-  background: rgb(44, 196, 216);
+  background: rgb(255, 73, 28);
   background: linear-gradient(
     180deg,
-    rgba(44, 196, 216, 1) 0%,
-    rgb(9, 19, 20) 100%
+    rgb(255, 73, 28) 0%,
+    rgb(92, 30, 30) 100%
   );
-  min-height: 45vh;
+  min-height: 48vh;
   width: 100%;
-  padding-top: 3rem;
 }
 .playlist-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   position: relative;
-  top: 3rem;
+  top: 4rem;
+  margin: 0 1rem;
+}
+.playlist-info {
+  grid-column: span 2 / span 2;
 }
 .playlistArt {
   justify-self: center;
+  margin-right: 1rem;
+}
+.playlistTitle {
+  color: #fff;
+  font-size: 2.5rem;
+}
+.playlistDisc {
+  font-size: 1rem;
+  color: rgb(226, 226, 226);
+}
+.playContainer {
+  padding: 2rem 0;
+  background: rgb(92, 30, 30);
+  background: linear-gradient(
+    180deg,
+    rgba(92, 30, 30, 1) 0%,
+    rgba(18, 18, 18, 1) 32%
+  );
+  margin: 0;
+}
+/* .glassDiv {
+  padding: 2rem;
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: saturate(180%) blur(10px);
+} */
+.player-play {
+  color: #1db954;
+  font-size: 3rem;
+  margin-left: 3rem;
 }
 .tableContainer {
-  background-color: #121212;
+  background-color: rgb(18, 18, 18);
   width: 100%;
 }
 .table {
@@ -35,13 +72,18 @@
 .tableBody {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  padding-bottom: 8rem;
+  padding-bottom: 35%;
+}
+.deskTB {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  padding-bottom: 13%;
 }
 .header-row {
   display: grid;
   justify-content: space-between;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  padding: 0.5rem 0.5rem;
+  padding: 0.75rem 0.5rem;
 }
 .header {
   font-size: 1.2rem;
@@ -79,9 +121,5 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
+@media (max-width: 768px) {
 }

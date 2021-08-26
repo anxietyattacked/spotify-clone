@@ -10,6 +10,7 @@ import React, {
 import styles from "../styles/Player.module.css";
 import Image from "next/image";
 import { Audio } from "three";
+import { Icon } from "@iconify/react";
 
 function formatTime(seconds: number) {
   return [
@@ -68,6 +69,7 @@ interface Props {
     }>
   >;
   audioRef: RefObject<HTMLAudioElement>;
+  isMobile: boolean;
 }
 
 const Player: React.FC<Props> = ({
@@ -80,14 +82,12 @@ const Player: React.FC<Props> = ({
   currentTrackInfo,
   setCurrentTrackInfo,
   audioRef,
+  isMobile,
 }) => {
   const progressBar = useRef<HTMLInputElement>(null);
   const soundBar = useRef<HTMLInputElement>(null);
   const animationRef = useRef<any>();
-
   const [currentTime, setCurrentTime] = useState(0);
-  // const [duration, setDuration] = useState(0);
-
   const [volume, setVolume] = useState(50);
 
   const togglePlayPause = () => {
@@ -173,6 +173,9 @@ const Player: React.FC<Props> = ({
     volume,
     trackIndex,
     audioRef,
+    tracks,
+    currentTrackInfo,
+    setCurrentTrackInfo,
   ]);
   useEffect(() => {
     if (audioRef.current && !isPlaying) {
@@ -222,14 +225,16 @@ const Player: React.FC<Props> = ({
       <footer className={styles["player-container"]}>
         <div className={styles["player-elements"]}>
           <div className={styles.infoDiv}>
-            <div className={styles.albumArt}>
-              <Image
-                src={currentTrackInfo.image}
-                alt="album art"
-                width={60}
-                height={60}
-              />
-            </div>
+            {!isMobile ? (
+              <div className={styles.albumArt}>
+                <Image
+                  src={currentTrackInfo.image}
+                  alt="album art"
+                  width={60}
+                  height={60}
+                />
+              </div>
+            ) : null}
             <div className={styles.textDiv}>
               <h2 className={styles["song-title"]}>{currentTrackInfo.title}</h2>
               <h3 className={styles["artist"]}>{currentTrackInfo.artist}</h3>
@@ -240,9 +245,6 @@ const Player: React.FC<Props> = ({
               <button
                 className={styles["button"]}
                 onClick={() => {
-                  // if (audioRef.current!.currentTime <= 10) {
-                  //   audioRef.current!.currentTime = 0;
-                  // }
                   if (trackIndex === 0 && audioRef.current) {
                     if (isPlaying) {
                       setIsPlaying(false);
@@ -266,28 +268,37 @@ const Player: React.FC<Props> = ({
                   }
                 }}
               >
-                <span
+                <Icon
                   className={`iconify ${styles["player-skip-back"]}`}
-                  data-icon="bi-skip-start-fill"
-                  data-inline="false"
-                ></span>
+                  icon="bi-skip-start-fill"
+                ></Icon>
               </button>
-              <button className={styles["button"]} onClick={togglePlayPause}>
-                {!isPlaying ? (
-                  <span
+              {!isPlaying ? (
+                <button
+                  aria-label="play"
+                  className={styles["button"]}
+                  onClick={togglePlayPause}
+                >
+                  <Icon
                     className={`iconify ${styles["player-play"]}`}
-                    data-icon="bi-play-circle-fill"
-                    data-inline="false"
-                  ></span>
-                ) : (
-                  <span
+                    icon="bi-play-circle-fill"
+                  ></Icon>
+                </button>
+              ) : (
+                <button
+                  aria-label="pause"
+                  className={styles["button"]}
+                  onClick={togglePlayPause}
+                >
+                  <Icon
                     className={`iconify ${styles["player-play"]}`}
-                    data-icon="bi-pause-circle-fill"
-                    data-inline="false"
-                  ></span>
-                )}
-              </button>
+                    icon="bi-pause-circle-fill"
+                  ></Icon>
+                </button>
+              )}
+
               <button
+                aria-label="skip forward"
                 className={styles["button"]}
                 onClick={async () => {
                   {
@@ -316,11 +327,10 @@ const Player: React.FC<Props> = ({
                   }
                 }}
               >
-                <span
+                <Icon
                   className={`iconify ${styles["player-skip-forward"]}`}
-                  data-icon="bi-skip-end-fill"
-                  data-inline="false"
-                ></span>
+                  icon="bi-skip-end-fill"
+                ></Icon>
               </button>
             </div>
             <div className={styles["player-controls-bar"]}>
@@ -328,6 +338,7 @@ const Player: React.FC<Props> = ({
                 {formatTime(currentTime)}
               </p>
               <input
+                aria-label="seek bar"
                 onChange={changeRange}
                 ref={progressBar}
                 type="range"
@@ -345,12 +356,63 @@ const Player: React.FC<Props> = ({
             </div>
           </div>
           <div className={styles["player-sound-controls"]}>
-            <span
-              className={`iconify ${styles["player-sound"]}`}
-              data-icon="bi-volume-down"
-              data-inline="false"
-            ></span>
+            {volume === 0 ? (
+              <Icon
+                aria-label="unmute"
+                icon={"bi:volume-mute-fill"}
+                className={`iconify ${styles["player-sound"]}`}
+                onClick={() => {
+                  if (soundBar.current) {
+                    setVolume(50);
+                    soundBar.current.value = "50";
+                    soundBar.current.style.setProperty(
+                      "--seek-before-width",
+                      `${50}%`
+                    );
+                  }
+                }}
+              ></Icon>
+            ) : volume < 50 ? (
+              <Icon
+                aria-label="mute"
+                onClick={() => {
+                  if (volume !== 0) {
+                    setVolume(0);
+                    if (soundBar.current) {
+                      setVolume(0);
+                      soundBar.current.value = "0";
+                      soundBar.current.style.setProperty(
+                        "--seek-before-width",
+                        `${0}%`
+                      );
+                    }
+                  }
+                }}
+                className={`iconify ${styles["player-sound"]}`}
+                icon="bi:volume-down-fill"
+              ></Icon>
+            ) : (
+              <Icon
+                aria-label="mute"
+                onClick={() => {
+                  if (volume !== 0) {
+                    setVolume(0);
+                    if (soundBar.current) {
+                      setVolume(0);
+                      soundBar.current.value = "0";
+                      soundBar.current.style.setProperty(
+                        "--seek-before-width",
+                        `${0}%`
+                      );
+                    }
+                  }
+                }}
+                className={`iconify ${styles["player-sound"]}`}
+                icon="bi:volume-up-fill"
+              ></Icon>
+            )}
             <input
+              aria-label="sound"
               ref={soundBar}
               onChange={(event) => {
                 if (soundBar.current) {
@@ -364,6 +426,7 @@ const Player: React.FC<Props> = ({
               type="range"
               min={0}
               step={1}
+              max={100}
               className={styles["sound-slider"]}
               id="soundRange"
             ></input>

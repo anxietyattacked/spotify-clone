@@ -8,12 +8,37 @@
   overflow-x: hidden;
   z-index: 10;
 }
+.logoDiv {
+  display: flex;
+  padding-top: 1rem;
+  margin-left: 1rem;
+}
+.titleIcon {
+  align-self: center;
+  color: #1db954;
+  font-size: 2.5rem;
+  margin-right: 0.5rem;
+}
+.title {
+  align-self: center;
+  font-size: 1.5rem;
+  color: #fff;
+}
 .sidebar-text-container {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
 .sidebar-textdiv {
   margin-bottom: 1.4rem;
+}
+.sidebar-button {
+  display: flex;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 .sidebar-text {
   color: #b3b3b3;
