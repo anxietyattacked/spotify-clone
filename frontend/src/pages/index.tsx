@@ -96,6 +96,7 @@ const Home: React.FC<Props> = ({
             <p className={styles.text}>{cell.row.index + 1}</p>
             <div className={styles.albumArt}>
               <Image
+                priority={true}
                 src={cell.row.values.image}
                 alt={`${cell.row.values.title}`}
                 width={50}
@@ -161,7 +162,13 @@ const Home: React.FC<Props> = ({
         <div className={styles["playlist-title-container"]}>
           <div className={styles["playlist-grid"]}>
             <div className={styles.playlistArt}>
-              <Image src="/1.jpg" alt="playlist art" width={200} height={200} />
+              <Image
+                priority={true}
+                src="/1.jpg"
+                alt="playlist art"
+                width={200}
+                height={200}
+              />
             </div>
             <div className={styles["playlist-info"]}>
               <h2>Playlist</h2>
