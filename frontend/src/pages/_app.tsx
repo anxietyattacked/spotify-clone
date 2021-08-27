@@ -73,7 +73,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         isMobile={isMobile}
       />
 
-      <audio ref={audioRef} src={currentTrackInfo.location} preload="metadata">
+      <audio
+        autoPlay={false}
+        ref={audioRef}
+        src={currentTrackInfo.location}
+        preload="metadata"
+      >
         <source />
       </audio>
       {isMobile ? <MobileNav /> : null}
