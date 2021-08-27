@@ -96,7 +96,6 @@ const Home: React.FC<Props> = ({
             <p className={styles.text}>{cell.row.index + 1}</p>
             <div className={styles.albumArt}>
               <Image
-                priority={true}
                 src={cell.row.values.image}
                 alt={`${cell.row.values.title}`}
                 width={50}
