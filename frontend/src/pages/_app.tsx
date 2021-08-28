@@ -11,6 +11,14 @@ import useWindowDimensions from "../utils/useWindowDimensions";
 import MobileNav from "../components/MobileNav";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  interface tracksType {
+    title: string;
+    artist: string;
+    time: number;
+    image: string;
+    location: string;
+  }
+
   const sampleTracks = [
     {
       title: "Epic",
@@ -35,26 +43,30 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   ];
   const [isPlaying, setIsPlaying] = useState(false);
-  const [tracks, setTracks] = useState(sampleTracks);
+  const [tracks, setTracks] = useState<tracksType[]>(sampleTracks);
   let [trackIndex, setTrackIndex] = useState(0);
 
   const [currentTrackInfo, setCurrentTrackInfo] = useState(
     sampleTracks[trackIndex]
   );
   const window = useWindowDimensions();
-  let isMobile = window.width! <= 768;
+  let isMobile = (window.width as number) <= 768;
 
-  let audioRef = useRef<HTMLAudioElement>(null!);
-  let listenerRef = useRef<AudioListener>(null!);
-  let soundRef = useRef<Audio<GainNode>>(null!);
+  let audioRef = useRef<HTMLAudioElement>(null);
+  let listenerRef = useRef<AudioListener>();
+  let soundRef = useRef<Audio<GainNode>>();
   useEffect(() => {
     listenerRef.current = new AudioListener();
     soundRef.current = new Audio(listenerRef.current);
-    soundRef.current.setMediaElementSource(audioRef.current);
-
-    return () => {};
+    soundRef.current.setMediaElementSource(
+      audioRef.current as HTMLAudioElement
+    );
   }, []);
-
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = false;
+    }
+  }, [isPlaying]);
   return (
     <>
       {!isMobile ? <Sidebar /> : null}
@@ -74,7 +86,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
 
       <audio
-        autoPlay={false}
+        muted={true}
         ref={audioRef}
         src={currentTrackInfo.location}
         preload="metadata"
@@ -94,6 +106,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         setCurrentTrackInfo={setCurrentTrackInfo}
         audioRef={audioRef}
         isMobile={isMobile}
+        soundRef={soundRef}
+        listenerRef={listenerRef}
       />
     </>
   );

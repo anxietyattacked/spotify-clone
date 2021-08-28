@@ -9,8 +9,8 @@ import React, {
 } from "react";
 import styles from "../styles/Player.module.css";
 import Image from "next/image";
-import { Audio } from "three";
 import { Icon } from "@iconify/react";
+import { Audio, AudioListener } from "three";
 
 function formatTime(seconds: number) {
   return [
@@ -32,17 +32,7 @@ interface Props {
     image: string;
     location: string;
   }[];
-  setTracks: React.Dispatch<
-    React.SetStateAction<
-      {
-        title: string;
-        artist: string;
-        time: number;
-        image: string;
-        location: string;
-      }[]
-    >
-  >;
+  setTracks: React.Dispatch<React.SetStateAction<tracksType[]>>;
   trackIndex: number;
   setTrackIndex: React.Dispatch<React.SetStateAction<number>>;
   sampleTracks: {
@@ -70,6 +60,15 @@ interface Props {
   >;
   audioRef: RefObject<HTMLAudioElement>;
   isMobile: boolean;
+  soundRef: React.MutableRefObject<Audio<GainNode> | undefined>;
+  listenerRef: React.MutableRefObject<AudioListener | undefined>;
+}
+interface tracksType {
+  title: string;
+  artist: string;
+  time: number;
+  image: string;
+  location: string;
 }
 
 const Player: React.FC<Props> = ({
@@ -83,12 +82,16 @@ const Player: React.FC<Props> = ({
   setCurrentTrackInfo,
   audioRef,
   isMobile,
+  soundRef,
+  listenerRef,
+  sampleTracks,
 }) => {
   const progressBar = useRef<HTMLInputElement>(null);
   const soundBar = useRef<HTMLInputElement>(null);
   const animationRef = useRef<any>();
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(50);
+  const [interact, setInteract] = useState(false);
 
   const togglePlayPause = () => {
     const prevValue = isPlaying;
@@ -96,16 +99,25 @@ const Player: React.FC<Props> = ({
     if (!prevValue) {
       if (audioRef.current) {
         const playPromise = audioRef.current.play();
+
         if (playPromise !== undefined) {
           playPromise
             .then((_) => {
               // Automatic playback started!
               // Show playing UI.
               animationRef.current = requestAnimationFrame(whilePlaying);
+              // if (interact === false) {
+              // if (audioRef.current) {
+              //   audioRef.current.muted = false;
+              // }
+              //   setInteract(true);
+              // }
+              audioRef.current!.muted = false;
             })
             .catch((error) => {
               // Auto-play was prevented
               // Show paused UI.
+              console.log(error);
             });
         }
       }
@@ -165,8 +177,8 @@ const Player: React.FC<Props> = ({
     }
     if (audioRef.current) {
       audioRef.current.volume = volume / 100;
+      setCurrentTrackInfo(tracks[trackIndex]);
     }
-    setCurrentTrackInfo(tracks[trackIndex]);
   }, [
     audioRef?.current?.onloadedmetadata,
     audioRef?.current?.readyState,
@@ -179,7 +191,6 @@ const Player: React.FC<Props> = ({
   ]);
   useEffect(() => {
     if (audioRef.current && !isPlaying) {
-      audioRef.current.autoplay = false;
     } else if (audioRef.current && isPlaying) {
       const playPromise = audioRef.current.play();
       if (currentTime == currentTrackInfo.time) {
@@ -203,6 +214,7 @@ const Player: React.FC<Props> = ({
             // Auto-play was prevented
             // Show paused UI.
             // cancelAnimationFrame(animationRef.current);
+            console.log(error);
           });
       }
     }
