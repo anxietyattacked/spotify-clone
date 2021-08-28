@@ -53,8 +53,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   let isMobile = (window.width as number) <= 768;
 
   let audioRef = useRef<HTMLAudioElement>(null);
-  let listenerRef = useRef<AudioListener>();
-  let soundRef = useRef<Audio<GainNode>>();
+  let listenerRef = useRef<AudioListener>(null!);
+  let soundRef = useRef<Audio<GainNode>>(null!);
   useEffect(() => {
     listenerRef.current = new AudioListener();
     soundRef.current = new Audio(listenerRef.current);
@@ -62,11 +62,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       audioRef.current as HTMLAudioElement
     );
   }, []);
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = false;
-    }
-  }, [isPlaying]);
   return (
     <>
       {!isMobile ? <Sidebar /> : null}
@@ -107,7 +102,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         audioRef={audioRef}
         isMobile={isMobile}
         soundRef={soundRef}
-        listenerRef={listenerRef}
       />
     </>
   );

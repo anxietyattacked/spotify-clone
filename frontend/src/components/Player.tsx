@@ -61,7 +61,6 @@ interface Props {
   audioRef: RefObject<HTMLAudioElement>;
   isMobile: boolean;
   soundRef: React.MutableRefObject<Audio<GainNode> | undefined>;
-  listenerRef: React.MutableRefObject<AudioListener | undefined>;
 }
 interface tracksType {
   title: string;
@@ -83,8 +82,6 @@ const Player: React.FC<Props> = ({
   audioRef,
   isMobile,
   soundRef,
-  listenerRef,
-  sampleTracks,
 }) => {
   const progressBar = useRef<HTMLInputElement>(null);
   const soundBar = useRef<HTMLInputElement>(null);
@@ -112,7 +109,11 @@ const Player: React.FC<Props> = ({
               // }
               //   setInteract(true);
               // }
-              audioRef.current!.muted = false;
+              if (audioRef.current) {
+                audioRef.current.muted = false;
+                audioRef.current.defaultMuted = false;
+                soundRef.current?.context.resume();
+              }
             })
             .catch((error) => {
               // Auto-play was prevented
