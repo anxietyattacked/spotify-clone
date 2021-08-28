@@ -149,7 +149,7 @@ const Home: React.FC<Props> = ({
   return (
     <div
       className={
-        !isMobile ? styles["main-container"] : styles["main-moible-container"]
+        !isMobile ? styles["main-container"] : styles["main-mobile-container"]
       }
     >
       <Head>
