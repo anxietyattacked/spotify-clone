@@ -161,13 +161,7 @@ const Home: React.FC<Props> = ({
         <div className={styles["playlist-title-container"]}>
           <div className={styles["playlist-grid"]}>
             <div className={styles.playlistArt}>
-              <Image
-                priority={true}
-                src="/1.jpg"
-                alt="playlist art"
-                width={200}
-                height={200}
-              />
+              <Image src="/1.jpg" alt="playlist art" width={200} height={200} />
             </div>
             <div className={styles["playlist-info"]}>
               <h2>Playlist</h2>
