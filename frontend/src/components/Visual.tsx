@@ -45,7 +45,6 @@ const Visual: React.FC<Props> = ({
       const textureLoader = new THREE.TextureLoader();
       const texture = textureLoader.load("Frame7.png");
       texture.minFilter = THREE.NearestFilter;
-      console.log(texture);
       //   Geometry, Mat, Mesh
       const geometry = new THREE.SphereBufferGeometry(1, 28, 28);
       const material = new THREE.ShaderMaterial({
