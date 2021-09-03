@@ -1,7 +1,29 @@
-# spotify-clone
+<h1 align="center">Spotify Clone with Music Visualizer</h1>
+
+<p align="center">Spotify Clone with Music Visualizer<</p>
+
+## Links
+
+- [Repo](https://github.com/anxietyattacked/spotify-clone2 "SneakerFlex Repo")
+
+- [Live](http://spotify-clone-beryl.vercel.app/ "Live View")
+
+## Built With
+- TypeScript
+- Next.js
+- Three.js
+- React Table
+
+
+## Screenshots
+
+![Home Page](/frontend/public/spotify.png "Home Page")
+
+![](/screenshots/2.png)
+
+![](/screenshots/3.png)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
