@@ -1,6 +1,6 @@
 <h1 align="center">Spotify Clone with Music Visualizer</h1>
 
-<p align="center">Spotify Clone with Music Visualizer<</p>
+<p align="center">Spotify Clone with Music Visualizer</p>
 
 ## Links
 
