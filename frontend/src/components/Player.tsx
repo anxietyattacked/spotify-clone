@@ -88,7 +88,6 @@ const Player: React.FC<Props> = ({
   const animationRef = useRef<any>();
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(50);
-  const [interact, setInteract] = useState(false);
 
   const togglePlayPause = () => {
     const prevValue = isPlaying;
@@ -103,12 +102,7 @@ const Player: React.FC<Props> = ({
               // Automatic playback started!
               // Show playing UI.
               animationRef.current = requestAnimationFrame(whilePlaying);
-              // if (interact === false) {
-              // if (audioRef.current) {
-              //   audioRef.current.muted = false;
-              // }
-              //   setInteract(true);
-              // }
+
               if (audioRef.current) {
                 audioRef.current.muted = false;
                 audioRef.current.defaultMuted = false;
@@ -160,21 +154,6 @@ const Player: React.FC<Props> = ({
     if (audioRef.current && progressBar.current) {
       const seconds = Math.floor(audioRef.current.duration);
       progressBar.current.max = seconds.toString();
-      // if (isPlaying) {
-      //   const playPromise = audioRef.current.play();
-      //   if (playPromise !== undefined) {
-      //     playPromise
-      //       .then((_) => {
-      //         // Automatic playback started!
-      //         // Show playing UI.
-      //       })
-      //       .catch((error) => {
-      //         // Auto-play was prevented
-      //         // Show paused UI.
-      //         cancelAnimationFrame(animationRef.current);
-      //       });
-      //   }
-      // }
     }
     if (audioRef.current) {
       audioRef.current.volume = volume / 100;
